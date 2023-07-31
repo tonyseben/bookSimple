@@ -13,7 +13,7 @@
         android:theme="@style/Theme.BookSimple"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".movies.ui.MoviesActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
