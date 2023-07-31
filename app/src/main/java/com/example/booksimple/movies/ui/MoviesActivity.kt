@@ -3,6 +3,7 @@ package com.example.booksimple.movies.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -35,16 +36,18 @@ class MoviesActivity : AppCompatActivity() {
         viewModel.state.collect{ state ->
             when(state){
                 is ViewState.Loading -> {
-
+                    binding.toolbar.progressBar.visibility = View.VISIBLE
                 }
 
                 is ViewState.Success -> {
                     val movies = state.data
                     Log.d("TEST", "MOVIES: $movies")
                     moviesAdapter.submitList(movies)
+                    binding.toolbar.progressBar.visibility = View.GONE
                 }
 
                 is ViewState.Error -> {
+                    binding.toolbar.progressBar.visibility = View.GONE
 
                 }
             }
