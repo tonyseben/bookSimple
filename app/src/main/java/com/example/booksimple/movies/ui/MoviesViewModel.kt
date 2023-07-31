@@ -22,7 +22,6 @@ class MoviesViewModel @Inject constructor(
 
     fun getMovies() = viewModelScope.launch {
         try {
-            delay(3000)
             Log.d("TEST", "Starting ...")
             val movies = getMoviesUseCase()
             _state.value = ViewState.Success(movies)
