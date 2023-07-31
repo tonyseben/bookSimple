@@ -1,4 +1,4 @@
-package com.example.booksimple.movies.data.remote.model
+package com.example.booksimple.movies.data.remote.response
 
 data class X1(
     val image_orientation: String,

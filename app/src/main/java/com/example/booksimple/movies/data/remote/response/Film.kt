@@ -1,4 +1,4 @@
-package com.example.booksimple.movies.data.remote.model
+package com.example.booksimple.movies.data.remote.response
 
 data class Film(
     val age_rating: List<AgeRating>,
@@ -8,7 +8,7 @@ data class Film(
     val images: Images,
     val imdb_id: Int,
     val imdb_title_id: String,
-    val other_titles: OtherTitles,
+    val other_titles: Any,
     val release_dates: List<ReleaseDate>,
     val synopsis_long: String
 )

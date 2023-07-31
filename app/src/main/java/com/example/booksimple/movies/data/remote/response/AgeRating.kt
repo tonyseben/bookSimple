@@ -1,4 +1,4 @@
-package com.example.booksimple.movies.data.remote.model
+package com.example.booksimple.movies.data.remote.response
 
 data class AgeRating(
     val age_advisory: String,

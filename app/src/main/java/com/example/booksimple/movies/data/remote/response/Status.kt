@@ -1,4 +1,4 @@
-package com.example.booksimple.movies.data.remote.model
+package com.example.booksimple.movies.data.remote.response
 
 data class Status(
     val count: Int,
