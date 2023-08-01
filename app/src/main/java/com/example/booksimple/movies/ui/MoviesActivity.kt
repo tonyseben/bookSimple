@@ -64,10 +64,11 @@ class MoviesActivity : AppCompatActivity() {
         moviesAdapter.onItemClickListener = { item ->
             val intent = Intent(this@MoviesActivity, SeatBookingActivity::class.java)
             intent.putExtra(SeatBookingActivity.MOVIE_ID, item.id)
+            intent.putExtra(SeatBookingActivity.MOVIE_TITLE, item.title)
             startActivity(intent)
         }
 
-        binding.toolbar.backButton.setOnClickListener {
+        toolbar.backButton.setOnClickListener {
             onBackPressed()
         }
     }
