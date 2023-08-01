@@ -5,6 +5,12 @@ import com.example.booksimple.movies.data.repository.MovieRepository
 import com.example.booksimple.movies.data.repository.MovieRepositoryImpl
 import com.example.booksimple.movies.domain.GetMoviesUseCase
 import com.example.booksimple.movies.domain.GetMoviesUseCaseImpl
+import com.example.booksimple.seats.data.remote.SeatsApi
+import com.example.booksimple.seats.data.remote.SeatsApiMockImpl
+import com.example.booksimple.seats.data.repository.SeatsRepository
+import com.example.booksimple.seats.data.repository.SeatsRepositoryImpl
+import com.example.booksimple.seats.domain.GetSeatsUseCase
+import com.example.booksimple.seats.domain.GetSeatsUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -48,5 +54,22 @@ class AppModule {
         @Binds
         @Singleton
         fun provideGetMoviesUseCase(useCase: GetMoviesUseCaseImpl): GetMoviesUseCase
+
+        @Binds
+        @Singleton
+        fun provideSeatRepository(useCase: SeatsRepositoryImpl): SeatsRepository
+
+        @Binds
+        @Singleton
+        fun provideGetSeatsUseCase(useCase: GetSeatsUseCaseImpl): GetSeatsUseCase
+    }
+
+    @Module
+    @InstallIn(SingletonComponent::class)
+    interface AppModuleMocks{
+
+        @Binds
+        @Singleton
+        fun provideMockSeatsApi(seatsApi: SeatsApiMockImpl): SeatsApi
     }
 }
