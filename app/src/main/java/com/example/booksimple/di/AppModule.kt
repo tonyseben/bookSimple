@@ -62,11 +62,7 @@ class AppModule {
         @Binds
         @Singleton
         fun provideGetSeatsUseCase(useCase: GetSeatsUseCaseImpl): GetSeatsUseCase
-    }
 
-    @Module
-    @InstallIn(SingletonComponent::class)
-    interface AppModuleMocks{
 
         @Binds
         @Singleton

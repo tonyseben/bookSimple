@@ -1,5 +1,6 @@
 package com.example.booksimple.movies.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.booksimple.databinding.ActivityMoviesBinding
+import com.example.booksimple.seats.ui.SeatBookingActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -60,7 +62,9 @@ class MoviesActivity : AppCompatActivity() {
             adapter = moviesAdapter
         }
         moviesAdapter.onItemClickListener = { item ->
-
+            val intent = Intent(this@MoviesActivity, SeatBookingActivity::class.java)
+            intent.putExtra(SeatBookingActivity.MOVIE_ID, item.id)
+            startActivity(intent)
         }
 
         binding.toolbar.backButton.setOnClickListener {

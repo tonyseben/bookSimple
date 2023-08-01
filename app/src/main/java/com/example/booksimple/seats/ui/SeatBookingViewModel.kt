@@ -9,12 +9,13 @@ import com.example.booksimple.seats.domain.model.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SeatBookingViewModel @Inject constructor(
-    val getSeatsUseCase: GetSeatsUseCase
+    private val getSeatsUseCase: GetSeatsUseCase
 ) : ViewModel() {
 
     private val _state: MutableStateFlow<ViewState> = MutableStateFlow(ViewState.Loading)
@@ -30,11 +31,26 @@ class SeatBookingViewModel @Inject constructor(
             _state.value = ViewState.Error("Failed to fetch seats \n${e.message}")
         }
     }
+
+    fun seatStatusChange(position: Int) {
+        if (_state.value is ViewState.Success) {
+            val seats = (_state.value as ViewState.Success).data.toMutableList()
+            when(seats[position].status) {
+                Status.Selected -> seats[position] = seats[position].copy(status = Status.Vacant)
+                Status.Vacant -> seats[position] = seats[position].copy(status = Status.Selected)
+                else -> {}
+            }
+            _state.update {
+                (_state.value as ViewState.Success).copy(data = seats)
+            }
+        }
+    }
+
 }
 
 
 sealed class ViewState {
     object Loading : ViewState()
-    data class Success(val data: List<List<Seat>>) : ViewState()
+    data class Success(val data: List<Seat>) : ViewState()
     data class Error(val message: String) : ViewState()
 }
