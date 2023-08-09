@@ -14,7 +14,7 @@ interface MoviesApi {
         "territory: US",
         "api-version: v200",
         "geolocation: 33.7675434;-84.5849409",
-        "device-datetime: 2023-07-31T11:04:03+0000"
+        "device-datetime: 2023-08-06T11:04:03+0000"
     )
     @GET("filmsNowShowing/")
     suspend fun getMovies(@Query("n") count: Int): MoviesResponse

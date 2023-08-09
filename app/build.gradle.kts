@@ -53,6 +53,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
     // Hilt
     implementation("com.google.dagger:hilt-android:2.44")
+    testImplementation("junit:junit:4.12")
     kapt("com.google.dagger:hilt-android-compiler:2.44")
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")

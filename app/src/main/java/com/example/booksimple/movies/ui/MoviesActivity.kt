@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,29 +31,29 @@ class MoviesActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         handleState()
+        handleSideEffects()
         binding.initViews()
-        viewModel.getMovies()
     }
 
     private fun handleState() = lifecycleScope.launch{
         viewModel.state.collect{ state ->
-            when(state){
-                is ViewState.Loading -> {
-                    binding.toolbar.progressBar.visibility = View.VISIBLE
-                }
+            binding.toolbar.progressBar.isVisible = state.isLoading
 
-                is ViewState.Success -> {
-                    val movies = state.data
-                    Log.d("TEST", "MOVIES: $movies")
-                    moviesAdapter.submitList(movies)
-                    binding.toolbar.progressBar.visibility = View.GONE
-                }
+            Log.d("TEST", "MOVIES: ${state.movies}")
+            moviesAdapter.submitList(state.movies)
+        }
+    }
 
-                is ViewState.Error -> {
-                    binding.toolbar.progressBar.visibility = View.GONE
-
+    private fun handleSideEffects() = lifecycleScope.launch{
+        viewModel.effect.collect{ effect ->
+            when(effect){
+                is MoviesContract.SideEffect.Navigation.ToMovieDetails ->{
+                    val intent = Intent(this@MoviesActivity, SeatBookingActivity::class.java)
+                    intent.putExtra(SeatBookingActivity.MOVIE_ID, effect.movieId)
+                    startActivity(intent)
                 }
             }
+
         }
     }
 
@@ -62,14 +63,12 @@ class MoviesActivity : AppCompatActivity() {
             adapter = moviesAdapter
         }
         moviesAdapter.onItemClickListener = { item ->
-            val intent = Intent(this@MoviesActivity, SeatBookingActivity::class.java)
-            intent.putExtra(SeatBookingActivity.MOVIE_ID, item.id)
-            intent.putExtra(SeatBookingActivity.MOVIE_TITLE, item.title)
-            startActivity(intent)
+            viewModel.setEvent(MoviesContract.Event.OnMovieClicked(item.id))
         }
-
         toolbar.backButton.setOnClickListener {
             onBackPressed()
         }
     }
+
+
 }

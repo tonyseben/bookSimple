@@ -34,10 +34,6 @@ class SeatBookingActivity : AppCompatActivity() {
     }
 
     private fun ActivitySeatBookingBinding.initViews(){
-
-        val movieTitle = requireNotNull(intent.extras?.getString(MOVIE_TITLE))
-        toolbar.titleTextView.text = movieTitle
-
         seatsRecyclerView.apply {
             layoutManager = GridLayoutManager(this@SeatBookingActivity, 9)
             adapter = seatsAdapter
@@ -75,6 +71,5 @@ class SeatBookingActivity : AppCompatActivity() {
 
     companion object {
         const val MOVIE_ID = "MOVIE_ID"
-        const val MOVIE_TITLE = "MOVIE_TITLE"
     }
 }

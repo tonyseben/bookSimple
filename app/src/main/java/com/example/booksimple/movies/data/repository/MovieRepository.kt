@@ -15,7 +15,7 @@ class MovieRepositoryImpl @Inject constructor(
 
     override suspend fun getFilms(): List<Film> {
         Log.d("TEST", "Movies request")
-        val moviesResponse = moviesApi.getMovies(10)
+        val moviesResponse = moviesApi.getMovies(9)
         return moviesResponse.films
     }
 

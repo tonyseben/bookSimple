@@ -1,40 +1,44 @@
 package com.example.booksimple.movies.ui
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.booksimple.base.BaseViewModel
 import com.example.booksimple.movies.domain.GetMoviesUseCase
-import com.example.booksimple.movies.domain.model.Movie
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MoviesViewModel @Inject constructor(
     val getMoviesUseCase: GetMoviesUseCase
-) : ViewModel() {
+) : BaseViewModel<
+        MoviesContract.State,
+        MoviesContract.Event,
+        MoviesContract.SideEffect>(MoviesContract.State()) {
 
-    private val _state: MutableStateFlow<ViewState> = MutableStateFlow(ViewState.Loading)
-    val state: StateFlow<ViewState> = _state
+    init {
+        getMovies()
+    }
 
     fun getMovies() = viewModelScope.launch {
         try {
             Log.d("TEST", "Starting ...")
+            setState { copy(isLoading = true) }
             val movies = getMoviesUseCase()
-            _state.value = ViewState.Success(movies)
+            setState { copy(movies = movies, isLoading = false) }
         } catch (e: Exception) {
             e.printStackTrace()
-            _state.value = ViewState.Error("Failed to fetch movies \n${e.message}")
+            setState { copy(message = "Failed to fetch movies \n${e.message}", isLoading = false) }
+        }
+    }
+
+    override fun handleEvents(event: MoviesContract.Event) {
+        when (event) {
+            is MoviesContract.Event.OnMovieClicked -> {
+                applySideEffect(MoviesContract.SideEffect.Navigation.ToMovieDetails(event.movieId))
+            }
         }
     }
 }
 
-sealed class ViewState {
-    object Loading : ViewState()
-    data class Success(val data: List<Movie>) : ViewState()
-    data class Error(val message: String) : ViewState()
-}
 
